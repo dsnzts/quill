@@ -10,7 +10,7 @@ import Module from '../core/module';
 const debug = logger('quill:keyboard');
 
 const SHORTKEY = /Mac/i.test(navigator.platform) ? 'metaKey' : 'ctrlKey';
-
+//by xxj
 class Keyboard extends Module {
   static match(evt, binding) {
     if (
