@@ -32,9 +32,10 @@ class Keyboard extends Module {
       }
     });
     this.addBinding({ key: 'Enter', shiftKey: null }, this.handleEnter);
+    this.addBinding({ key: 'Enter', shiftKey: this.handleShiftEnter }, () => { });
     this.addBinding(
       { key: 'Enter', metaKey: null, ctrlKey: null, altKey: null },
-      () => {},
+      () => { },
     );
     if (/Firefox/i.test(navigator.userAgent)) {
       // Need to handle delete and backspace for Firefox in the general case #1171
@@ -279,6 +280,35 @@ class Keyboard extends Module {
       this.quill.format(name, context.format[name], Quill.sources.USER);
     });
   }
+  handleShiftEnter(range, context) {
+    console.log("handleShiftEnter")
+    const lineFormats = Object.keys(context.format).reduce(
+      (formats, format) => {
+        if (
+          this.quill.scroll.query(format, Scope.BLOCK) &&
+          !Array.isArray(context.format[format])
+        ) {
+          formats[format] = context.format[format];
+        }
+        return formats;
+      },
+      {},
+    );
+    const delta = new Delta()
+      .retain(range.index)
+      .delete(range.length)
+      .insert('\n', lineFormats);
+    this.quill.updateContents(delta, Quill.sources.USER);
+    this.quill.setSelection(range.index + 1, Quill.sources.SILENT);
+    this.quill.focus();
+
+    Object.keys(context.format).forEach(name => {
+      if (lineFormats[name] != null) return;
+      if (Array.isArray(context.format[name])) return;
+      if (name === 'code' || name === 'link') return;
+      this.quill.format(name, context.format[name], Quill.sources.USER);
+    });
+  }
 }
 
 Keyboard.DEFAULTS = {
@@ -416,14 +446,14 @@ Keyboard.DEFAULTS = {
       format: ['table'],
       collapsed: true,
       offset: 0,
-      handler() {},
+      handler() { },
     },
     'table delete': {
       key: 'Delete',
       format: ['table'],
       collapsed: true,
       suffix: /^$/,
-      handler() {},
+      handler() { },
     },
     'table enter': {
       key: 'Enter',
