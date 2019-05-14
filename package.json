@@ -1,6 +1,6 @@
 {
   "name": "quill",
-  "version": "2.0.0-dev.3",
+  "version": "2.0.0-dev.4",
   "description": "Your powerful, rich text editor",
   "author": "Jason Chen <jhchen7@gmail.com>",
   "homepage": "http://quilljs.com",
@@ -35,9 +35,15 @@
     "clone": "^2.1.2",
     "deep-equal": "^1.0.1",
     "eventemitter3": "^3.1.0",
+<<<<<<< HEAD
     "extend": "^3.0.2",
     "parchment": "2.0.0-dev.0",
     "quill-delta": "4.2.1"
+=======
+    "extend": "^3.0.1",
+    "parchment": "2.0.0-dev.0",
+    "quill-delta": "^3.6.2"
+>>>>>>> cc6bcd88991971d635a762e0118e28e7e74bed76
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
